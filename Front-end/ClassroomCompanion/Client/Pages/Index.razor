@@ -1,0 +1,12 @@
+﻿@page "/"
+
+@inject IAccessTokenProvider _accessTokenProvider
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@inject NavigationManager _navigationManager
+@inject NotificationService _notificationService
+
+@attribute [Authorize]
+
+<RadzenNotification/>
+
+<h1>Welcome to Classroom Companion!</h1>

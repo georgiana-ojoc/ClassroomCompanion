@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.3" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="5.0.3" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+        <PackageReference Include="Radzen.Blazor" Version="3.3.2" />
+        <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Pages\ProfessorClassrooms.cs">
+        <DependentUpon>ProfessorClassrooms.razor</DependentUpon>
+      </Compile>
+      <Compile Update="Pages\ProfessorClassroom.cs">
+        <DependentUpon>ProfessorClassroom.razor</DependentUpon>
+      </Compile>
+      <Compile Update="Pages\StudentClassroom.cs">
+        <DependentUpon>StudentClassroom.razor</DependentUpon>
+      </Compile>
+      <Compile Update="Pages\StudentClassrooms.cs">
+        <DependentUpon>StudentClassrooms.razor</DependentUpon>
+      </Compile>
+      <Compile Update="Pages\Index.cs">
+        <DependentUpon>Index.razor</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>

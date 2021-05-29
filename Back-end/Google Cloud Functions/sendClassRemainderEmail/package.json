@@ -1,0 +1,12 @@
+{
+  "name": "class-remainder",
+  "version": "0.0.1",
+  "dependencies": {
+    "@google-cloud/pubsub": "^0.18.0",
+    "googleapis": "^68.0.0",
+    "moment-timezone": "^0.5.33",
+    "nodemailer": "^6.5.0",
+    "sequelize": "^6.6.2",
+    "tedious": "^11.0.8"
+  }
+}

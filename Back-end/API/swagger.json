@@ -1,0 +1,1490 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Cloud Computing",
+    "description": "OpenAPI Specification for the third homework.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Development server"
+    },
+    {
+      "url": "https://cloud-computing-fii.ew.r.appspot.com",
+      "description": "Production server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "authorization": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "classroom": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Course"
+          },
+          "subject": {
+            "type": "string",
+            "example": "Cloud Computing"
+          },
+          "professor": {
+            "type": "string",
+            "example": "jane.doe@gmail.com"
+          },
+          "names": {
+            "type": "string",
+            "example": "Jane Doe"
+          }
+        }
+      },
+      "student": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "classroomId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "example": "jane.doe@gmail.com"
+          },
+          "names": {
+            "type": "string",
+            "example": "Jane Doe"
+          }
+        }
+      },
+      "schedule": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "classroomId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "day": {
+            "type": "string",
+            "enum": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "example": "Monday"
+          },
+          "start": {
+            "type": "string",
+            "format": "hh:mm",
+            "example": "10:00"
+          },
+          "end": {
+            "type": "string",
+            "format": "hh:mm",
+            "example": "12:00"
+          }
+        }
+      },
+      "event": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string",
+            "format": "url"
+          },
+          "title": {
+            "type": "string",
+            "example": "Cloud Computing Course"
+          },
+          "day": {
+            "type": "string",
+            "enum": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "example": "Monday"
+          },
+          "start": {
+            "type": "string",
+            "format": "hh:mm",
+            "example": "10:00"
+          },
+          "end": {
+            "type": "string",
+            "format": "hh:mm",
+            "example": "12:00"
+          }
+        }
+      },
+      "announcement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "classroomId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "description": {
+            "type": "string",
+            "example": "Hello, students."
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "important",
+              "informative"
+            ]
+          },
+          "meetingId": {
+            "type": "string"
+          },
+          "meetingLink": {
+            "type": "string",
+            "format": "url"
+          },
+          "meetingDate": {
+            "type": "string",
+            "format": "dd.MM.yyyy",
+            "example": "30.06.2021"
+          },
+          "meetingStart": {
+            "type": "string",
+            "format": "hh:mm",
+            "example": "10:00"
+          },
+          "meetingEnd": {
+            "type": "string",
+            "format": "hh:mm",
+            "example": "12:00"
+          },
+          "created": {
+            "type": "string",
+            "format": "dd.MM.YYYY hh:mm",
+            "example": "30.06.2021 12:30"
+          }
+        }
+      }
+    },
+    "responses": {
+      "400": {
+        "description": "Request body not valid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Request body not valid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Authorization not set or not valid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Authorization not set or not valid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Classroom not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Classroom not found."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/classrooms": {
+      "post": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "classrooms"
+        ],
+        "summary": "Creates a classroom.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Course"
+                  },
+                  "subject": {
+                    "type": "string",
+                    "example": "Cloud Computing"
+                  }
+                },
+                "required": [
+                  "name",
+                  "subject"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Classroom created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/classroom"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "409": {
+            "description": "Classroom with specified name and subject already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Classroom with specified name, subject and professor already exists."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "classrooms"
+        ],
+        "summary": "Retrieves the classrooms of the specified role.",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "query",
+            "description": "Role",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "professor",
+                "student"
+              ],
+              "example": "professor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Classroom",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/classroom"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
+    "/classrooms/{classroomId}": {
+      "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "classrooms"
+        ],
+        "summary": "Retrieves the specified classroom.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Classroom retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/classroom"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "classrooms"
+        ],
+        "summary": "Deletes the specified classroom.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Classroom deleted successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Classroom deleted successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "description": "User not professor of the specified classroom.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User not professor of the specified classroom."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    },
+    "/classrooms/{classroomId}/students": {
+      "post": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "students"
+        ],
+        "summary": "Adds a student to the specified classroom.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Student added successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/student"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "description": "User already professor or student of the specified classroom.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User already professor or student of the specified classroom."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "students"
+        ],
+        "summary": "Retrieves the students from the specified classroom.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Students retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/student"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "students"
+        ],
+        "summary": "Removes the specified student from the specified classroom.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Student removed successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Student removed successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "description": "Classroom not found or user not student of the specified classroom.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Classroom not found or user not student of the specified classroom."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/classrooms/{classroomId}/schedules": {
+      "post": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "schedules"
+        ],
+        "summary": "Adds a schedule to the specified classroom.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "day": {
+                    "type": "string",
+                    "enum": [
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                      "Friday"
+                    ],
+                    "example": "Monday"
+                  },
+                  "start": {
+                    "type": "string",
+                    "format": "hh:mm",
+                    "example": "10:00"
+                  },
+                  "end": {
+                    "type": "string",
+                    "format": "hh:mm",
+                    "example": "12:00"
+                  }
+                },
+                "required": [
+                  "day",
+                  "start",
+                  "end"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Schedule added successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/schedule"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "description": "User not professor of the specified classroom.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User not professor of the specified classroom."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "description": "Schedule already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Schedule already exists."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "schedules"
+        ],
+        "summary": "Retrieves the schedules of the specified classroom.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Schedules retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/schedule"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    },
+    "/classrooms/{classroomId}/schedules/{scheduleId}": {
+      "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "schedules"
+        ],
+        "summary": "Retrieves the specified schedule.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "scheduleId",
+            "in": "path",
+            "description": "Schedule ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Schedule retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/schedule"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "description": "Classroom or schedule not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Classroom or schedule not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "schedules"
+        ],
+        "summary": "Removes the specified schedule from the specified classroom.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "scheduleId",
+            "in": "path",
+            "description": "Schedule ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Schedule removed successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Schedule removed successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "description": "User not professor of the specified classroom.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User not professor of the specified classroom."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Classroom or schedule not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Classroom or schedule not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendar": {
+      "post": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "calendar"
+        ],
+        "summary": "Adds an event in the calendar of the authorized user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Cloud Computing Course"
+                  },
+                  "day": {
+                    "type": "string",
+                    "enum": [
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                      "Friday"
+                    ],
+                    "example": "Monday"
+                  },
+                  "start": {
+                    "type": "string",
+                    "format": "hh:mm",
+                    "example": "10:00"
+                  },
+                  "end": {
+                    "type": "string",
+                    "format": "hh:mm",
+                    "example": "12:00"
+                  }
+                },
+                "required": [
+                  "title",
+                  "day",
+                  "start",
+                  "end"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event added successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "link": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "calendar"
+        ],
+        "summary": "Gets the classroom events from the calendar of the authorized user.",
+        "responses": {
+          "200": {
+            "description": "Events retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/event"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
+    "/calendar/{eventId}": {
+      "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "calendar"
+        ],
+        "summary": "Retrieves the specified event from the specified calendar of the authorized user.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Event ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/event"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "calendar"
+        ],
+        "summary": "Removes the specified event from the specified calendar of the authorized user.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Event ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Event removed successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Event removed successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
+    "/classrooms/{classroomId}/announcements": {
+      "post": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "announcements"
+        ],
+        "summary": "Adds an announcement in the specified classroom.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "example": "Hello, students."
+                  },
+                  "severity": {
+                    "type": "string",
+                    "enum": [
+                      "important",
+                      "informative"
+                    ]
+                  },
+                  "meetingDate": {
+                    "type": "string",
+                    "format": "dd.MM.yyyy",
+                    "example": "30.06.2021"
+                  },
+                  "meetingStart": {
+                    "type": "string",
+                    "format": "hh:mm",
+                    "example": "10:00"
+                  },
+                  "meetingEnd": {
+                    "type": "string",
+                    "format": "hh:mm",
+                    "example": "12:00"
+                  }
+                },
+                "required": [
+                  "description",
+                  "severity"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Announcement added successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/announcement"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "description": "User not professor of the specified classroom.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User not professor of the specified classroom."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "announcements"
+        ],
+        "summary": "Retrieves the announcements from the specified classroom.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Announcement retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/announcement"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    },
+    "/classrooms/{classroomId}/announcements/{announcementId}": {
+      "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "announcements"
+        ],
+        "summary": "Retrieves the specified announcement.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "announcementId",
+            "in": "path",
+            "description": "Announcement ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Announcement retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/announcement"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "description": "Classroom or announcement not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Classroom or announcement not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "announcements"
+        ],
+        "summary": "Removes the specified announcement from the specified classroom.",
+        "parameters": [
+          {
+            "name": "classroomId",
+            "in": "path",
+            "description": "Classroom ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "announcementId",
+            "in": "path",
+            "description": "Announcement ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Announcement removed successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Announcement removed successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "description": "User not professor of the specified classroom.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User not professor of the specified classroom."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Classroom or announcement not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Classroom or announcement not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

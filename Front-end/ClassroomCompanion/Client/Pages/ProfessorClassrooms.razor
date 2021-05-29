@@ -1,0 +1,75 @@
+﻿@page "/professor_classrooms"
+
+@inject DialogService _dialogService
+@inject HttpClient _client
+@inject IdService _idService
+@inject NavigationManager _navigationManager
+@inject NotificationService _notificationService
+
+@attribute [Authorize]
+
+<RadzenNotification/>
+<RadzenDialog/>
+
+<h2>Professor Classrooms</h2>
+<hr>
+<RadzenPanel Text="Create a new classroom" AllowCollapse="true" Collapsed="@_createClassroomCollapsed"
+             Style="margin: 0.5rem" Expand="@(() => _createClassroomCollapsed = false)"
+             Collapse="@(() => _createClassroomCollapsed = true)">
+    <RadzenTemplateForm TItem="Classroom" Data="_newClassroom" Submit="@CreateClassroom">
+        <RadzenFieldset Text="New classroom">
+            <div class="row" style="margin-bottom: 2rem">
+                <div class="col-md-4 align-right">
+                    <RadzenLabel Text="Name"/>
+                </div>
+                <div class="col">
+                    <RadzenTextBox style="display: block" Name="Name" @bind-Value="@_newClassroom.Name"/>
+                    <RadzenRequiredValidator Component="Name" Text="Name cannot be empty." Style="position: absolute"/>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 2rem">
+                <div class="col-md-4 align-right">
+                    <RadzenLabel Text="Subject"/>
+                </div>
+                <div class="col">
+                    <RadzenTextBox style="display: block" Name="Subject" @bind-Value="@_newClassroom.Subject"/>
+                    <RadzenRequiredValidator Component="Subject" Text="Subject cannot be empty." Style="position: absolute"/>
+                </div>
+            </div>
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Create classroom"></RadzenButton>
+        </RadzenFieldset>
+    </RadzenTemplateForm>
+</RadzenPanel>
+<RadzenPanel Text="Your classrooms" Style="margin: 0.5rem">
+    @if (_classrooms is null)
+    {
+        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"
+                           Style="margin-bottom: 20px"/>
+    }
+    else
+    {
+        <RadzenDataList PageSize="4" WrapItems="true" AllowPaging="true" Data="@_classrooms"
+                        TItem="Classroom">
+            <Template Context="classroom">
+                <div class="card" style="max-width: 18rem; margin: 1rem">
+                    <div class="card" style="width: 16rem">
+                        <h4 class="card-header" style="text-align: center">
+                            @classroom.Name <br> @classroom.Subject
+                        </h4>
+                        <div class="card-body" style="margin: auto">
+                            <div class="btn-group">
+                                <button class="btn btn-success" @onclick="@(() => SetClassroomId(classroom.Id))">
+                                    Enter classroom
+                                </button>
+                                <button class="btn btn-danger" @onclick="@(() => DeleteClassroom(classroom.Id))">
+                                    Delete classroom
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-footer" style="text-align: center">@classroom.Id</div>
+                    </div>
+                </div>
+            </Template>
+        </RadzenDataList>
+    }
+</RadzenPanel>

@@ -1,0 +1,136 @@
+﻿@page "/student_classroom"
+
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject HttpClient _client
+@inject IdService _idService
+@inject NavigationManager _navigationManager
+@inject NotificationService _notificationService
+
+@attribute [Authorize]
+
+<RadzenNotification/>
+
+@if (_classroom is null)
+{
+    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" Style="margin-bottom: 20px"/>
+}
+else
+{
+    <h2>Student Classroom: @_classroom.Name - @_classroom.Subject</h2>
+}
+<hr>
+<RadzenTabs>
+    <Tabs>
+        <RadzenTabsItem Text="Professor">
+            @if (_classroom is null)
+            {
+                <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" 
+                                   Style="margin-bottom: 20px"/>
+            }
+            else
+            {
+                <div class="card-body" style="width: 100%">
+                    <p class="card-text">@_classroom.Names (@_classroom.Professor)</p>
+                </div>
+            }
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Schedules">
+            <RadzenFieldset Text="Schedules">
+                @if (_schedules is null)
+                {
+                    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"
+                                       Style="margin-bottom: 20px"/>
+                }
+                else
+                {
+                    <RadzenDataList PageSize="3" WrapItems="true" AllowPaging="true" Data="@_schedules"
+                                    TItem="Models.Schedule">
+                        <Template Context="schedule">
+                            <div class="card" style="max-width: 22rem; margin: 1rem">
+                                <div class="card" style="width: 20rem">
+                                    <h4 class="card-header" style="text-align: center">
+                                        @schedule.Day <br> @schedule.Start - @schedule.End <br>
+                                        <button type="button" class="btn btn-link"
+                                                disabled="@schedule.LinkDisabled">
+                                            <a href="@schedule.EventLink">Event link</a>
+                                        </button>
+                                    </h4>
+                                    <div class="card-body" style="margin: auto">
+                                        <div class="btn-group">
+                                            <button class="btn btn-success"
+                                                    disabled="@schedule.AddToCalendarDisabled"
+                                                    @onclick="@(() => AddToCalendar(schedule))">
+                                                Add to calendar
+                                            </button>
+                                            <button class="btn btn-info"
+                                                    disabled="@schedule.RemoveFromCalendarDisabled"
+                                                    @onclick="@(() => RemoveFromCalendar(schedule))">
+                                                Remove from calendar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Template>
+                    </RadzenDataList>
+                }
+            </RadzenFieldset>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Announcements">
+            <RadzenTabs>
+                <Tabs>
+                    <RadzenTabsItem Text="Important">
+                        @if (_importantAnnouncements is null)
+                        {
+                            <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"
+                                               Style="margin-bottom: 20px"/>
+                        }
+                        else
+                        {
+                            <RadzenDataList PageSize="2" WrapItems="true" AllowPaging="true"
+                                            Data="@_importantAnnouncements"
+                                            TItem="Models.Announcement">
+                                <Template Context="announcement">
+                                    <RadzenFieldset Text="@announcement.Created" Style="width: 100%; margin: 1rem">
+                                        <div class="card-body">
+                                            <p class="card-text">@announcement.Description</p>
+                                            <button type="button" class="btn btn-link"
+                                                    disabled="@announcement.LinkDisabled">
+                                                <a href="@announcement.MeetingLink">Meeting link</a>
+                                            </button>
+                                        </div>
+                                    </RadzenFieldset>
+                                </Template>
+                            </RadzenDataList>
+                        }
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Informative">
+                        @if (_informativeAnnouncements is null)
+                        {
+                            <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"
+                                               Style="margin-bottom: 20px"/>
+                        }
+                        else
+                        {
+                            <RadzenDataList PageSize="2" WrapItems="true" AllowPaging="true"
+                                            Data="@_informativeAnnouncements"
+                                            TItem="Models.Announcement">
+                                <Template Context="announcement">
+                                    <RadzenFieldset Text="@announcement.Created" Style="width: 100%; margin: 1rem">
+                                        <div class="card-body">
+                                            <p class="card-text">@announcement.Description</p>
+                                            <button type="button" class="btn btn-link"
+                                                    disabled="@announcement.LinkDisabled">
+                                                <a href="@announcement.MeetingLink">Meeting link</a>
+                                            </button>
+                                        </div>
+                                    </RadzenFieldset>
+                                </Template>
+                            </RadzenDataList>
+                        }
+                    </RadzenTabsItem>
+                </Tabs>
+            </RadzenTabs>
+        </RadzenTabsItem>
+    </Tabs>
+</RadzenTabs>
