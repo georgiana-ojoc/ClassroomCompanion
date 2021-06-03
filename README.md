@@ -6,8 +6,8 @@
    ![ClassRemainder](https://github.com/georgiana-ojoc/ClassroomCompanion/blob/main/images/ClassRemainder.png)  
  - students receive an email notification every time when one of their teachers posts an announcement  
    ![NewAnnouncement](https://github.com/georgiana-ojoc/ClassroomCompanion/blob/main/images/NewAnnouncement.png)  
-### Case Study
-![CaseStudy](https://github.com/georgiana-ojoc/ClassroomCompanion/blob/main/Classroom%20Companion.pdf)  
+### Documentation
+[Documentation](https://docs.google.com/presentation/d/1r3oxVQH1YWOk8rnLy1_hVN5n9pAqf2c7mWTm0Iwiwl8/edit?usp=sharing)  
 ### Quality
 ![Quality](https://github.com/georgiana-ojoc/ClassroomCompanion/blob/main/images/SonarQube.png)  
 ## Back-end
