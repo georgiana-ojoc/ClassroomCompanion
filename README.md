@@ -11,7 +11,7 @@
 ### Quality
 ![Quality](https://github.com/georgiana-ojoc/ClassroomCompanion/blob/main/images/SonarQube.png)  
 ## Back-end
-![Functionality](https://youtu.be/kfMnwFLzWQw)
+[Functionality](https://youtu.be/kfMnwFLzWQw)
 #### API
  - Node.js RESTful API with Express.js  
  - database: Cloud SQL for SQL Server  
@@ -19,7 +19,7 @@
  - sendClassRemainderEmail: Cloud Scheduler - Cloud Pub/Sub - Cloud Functions  
  - sendWelcomeEmailToNewUser and sendNewAnnouncementEmail: Aggregated sink - Cloud Pub/Sub - Cloud Functions  
 ## Front-end
-![Functionality](https://youtu.be/F0F7P-aqqKo)
+[Functionality](https://youtu.be/F0F7P-aqqKo)
  - Blazor (web framework using C#)  
  - Razden Blazor Component Library  
 ## Authentication and Authorization
