@@ -7,11 +7,11 @@
  - students receive an email notification every time when one of their teachers posts an announcement  
    ![NewAnnouncement](https://github.com/georgiana-ojoc/ClassroomCompanion/blob/main/images/NewAnnouncement.png)  
 ### Documentation
-[Documentation](https://docs.google.com/presentation/d/1r3oxVQH1YWOk8rnLy1_hVN5n9pAqf2c7mWTm0Iwiwl8/edit?usp=sharing)  
+[Documentation](https://docs.google.com/presentation/d/e/2PACX-1vQcGN8eZAtrGcWVZWJNOOznXANvw1eW1xhiUerAzn_4pBDMeLC35UdriNoBXm_s9N1jbyyQtExagdWW/pub?start=true&loop=false&delayms=15000)  
 ### Quality
 ![Quality](https://github.com/georgiana-ojoc/ClassroomCompanion/blob/main/images/SonarQube.png)  
 ## Back-end
-![Functionality](https://github.com/georgiana-ojoc/ClassroomCompanion/blob/main/videos/API.mp4)
+![Functionality](https://youtu.be/kfMnwFLzWQw)
 #### API
  - Node.js RESTful API with Express.js  
  - database: Cloud SQL for SQL Server  
@@ -19,7 +19,7 @@
  - sendClassRemainderEmail: Cloud Scheduler - Cloud Pub/Sub - Cloud Functions  
  - sendWelcomeEmailToNewUser and sendNewAnnouncementEmail: Aggregated sink - Cloud Pub/Sub - Cloud Functions  
 ## Front-end
-![Functionality](https://github.com/georgiana-ojoc/ClassroomCompanion/blob/main/videos/Client.mp4)
+![Functionality](https://youtu.be/F0F7P-aqqKo)
  - Blazor (web framework using C#)  
  - Razden Blazor Component Library  
 ## Authentication and Authorization
